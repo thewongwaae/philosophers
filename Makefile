@@ -1,24 +1,23 @@
-NAME = philo
+NAME		= philosophers
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror -pthread
+RM 			= rm -rf
 
-CFLAGS = -Wall -Wextra -Werror -pthread
+INCLUDES	= includes
 
-RM = rm -rf
+FILES		= main cycle utils libft
+SRCS 		= $(addsuffix .c, $(addprefix src/, $(FILES)))
 
-SRCS = 	srcs/main.c\
-		srcs/init.c\
-		srcs/philo.c\
-		srcs/philo_util.c\
-		srcs/utils.c\
+$(NAME):
+	@echo "\033[0;32mSetting the table...\033[0m"
+	@gcc $(CFLAGS) $(SRCS) -I $(INCLUDES) -o $(NAME)
 
-$(NAME) :
-	gcc $(CFLAGS) $(SRCS) -o $(NAME)
+all: $(NAME)
 
-all : $(NAME)
+clean:
+	@echo "\033[0;31mKilling off the remaining survivors...\033[0m"
+	@$(RM) $(NAME)
 
-fclean : clean
-	$(RM) $(NAME)
+fclean: clean
 
-clean :
-	$(RM) $(NAME)
-
-re : fclean all
+re: fclean all

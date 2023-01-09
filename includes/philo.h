@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:28 by nnorazma          #+#    #+#             */
-/*   Updated: 2022/12/26 15:20:26 by nnorazma         ###   ########.fr       */
+/*   Updated: 2023/01/09 21:34:54 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,51 +21,55 @@
 # include <sys/time.h>
 # include <limits.h>
 
-# define CLEAR "\033[0m"
+# define RESET "\033[0m"
 # define RED "\033[31m" //death
 # define CYAN "\033[36m" //eating
 # define YELLOW "\033[38;5;220m" //thinking
 # define GREEN "\033[32m" //take fork
 # define PURPLE "\033[38;5;129m" //sleeping
 
-typedef struct l_philo
+typedef struct s_philo
 {
 	int				id;
-	int				m_count;
+	int				meal_count;
 	bool			is_eating;
-	pthread_t		thread;
-	long int		last_eat;
-	struct l_info	*info;
+	long int		last_meal;
+	struct s_data	*info;
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
-}		t_philo;
+	pthread_t		thread;
+}					t_philo;
 
-typedef struct l_info
+typedef struct s_data
 {
 	int				philo_eat;
-	int				n_philo;
+	int				philo_count;
 	int				death;
 	int				eat;
 	int				sleep;
-	int				n_eat;
+	int				eat_count;
 	int				stop;
-	long int		t_start;
+	long int		start_time;
 	t_philo			*philo;
 	pthread_mutex_t	print;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	dead;
-}		t_info;
+}					t_data;
 
-void		ft_usleep(int ms);
-int			philo_init(t_info *data);
-void		*philo_life(void *philo);
+int			init(t_data *data);
+void		*life(void *p);
+void		philo_eat(t_philo *philo);
+void		take_fork(t_philo *philo);
+void		*check_death(void *p);
+
 long long	timestamp(void);
-int			var_init(t_info *data, char **av);
-void		*philo_life(void *phi);
-void		print(t_philo *philo, char *str, char *colour);
+void		ft_usleep(int ms);
+void		freeall(t_data *data);
 int			is_dead(t_philo *philo, int nb);
-int			ft_isdigit(int character);
-int			ft_atoi(const char *str);
+void		output_philo(t_philo *philo, char *str, char *colour);
+
+int			ft_isdigit(int ch);
+int			ft_atoi(const char *s);
 
 #endif
