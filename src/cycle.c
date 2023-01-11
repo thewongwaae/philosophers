@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_cycle.c                                      :+:      :+:    :+:   */
+/*   cycle.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:25 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/09 21:04:20 by hwong            ###   ########.fr       */
+/*   Updated: 2023/01/11 01:55:55 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	init(t_data *data)
 	}
 	i = -1;
 	while (++i < data->philo_count)
-		if (pthread_join(data->philo[i].thread, NULL) != 0)
-			return (-1);
+		if (!pthread_join(data->philo[i].thread, NULL))
+			return (1);
 	return (0);
 }

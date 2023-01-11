@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:28 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/09 21:34:54 by hwong            ###   ########.fr       */
+/*   Updated: 2023/01/11 01:45:36 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # define YELLOW "\033[38;5;220m" //thinking
 # define GREEN "\033[32m" //take fork
 # define PURPLE "\033[38;5;129m" //sleeping
+
+# define SUCC 0
+# define ERR 1
 
 typedef struct s_philo
 {
