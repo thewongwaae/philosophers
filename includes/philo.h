@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:28 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/11 01:45:36 by hwong            ###   ########.fr       */
+/*   Updated: 2023/01/11 21:42:12 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@
 # define YELLOW "\033[38;5;220m" //thinking
 # define GREEN "\033[32m" //take fork
 # define PURPLE "\033[38;5;129m" //sleeping
-
-# define SUCC 0
-# define ERR 1
 
 typedef struct s_philo
 {
@@ -60,7 +57,7 @@ typedef struct s_data
 	pthread_mutex_t	dead;
 }					t_data;
 
-int			init(t_data *data);
+int			init(t_data *info);
 void		*life(void *p);
 void		philo_eat(t_philo *philo);
 void		take_fork(t_philo *philo);
@@ -68,7 +65,7 @@ void		*check_death(void *p);
 
 long long	timestamp(void);
 void		ft_usleep(int ms);
-void		freeall(t_data *data);
+void		freeall(t_data *info);
 int			is_dead(t_philo *philo, int nb);
 void		output_philo(t_philo *philo, char *str, char *colour);
 

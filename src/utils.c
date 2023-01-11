@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:08 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/09 21:33:10 by hwong            ###   ########.fr       */
+/*   Updated: 2023/01/11 21:42:03 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,19 @@ void	output_philo(t_philo *philo, char *str, char *colour)
 	pthread_mutex_unlock(&(philo->info->print));
 }
 
-void	freeall(t_data *data)
+void	freeall(t_data *info)
 {
 	int	i;
 
 	i = -1;
-	while (++i < data->philo_count)
+	while (++i < info->philo_count)
 	{
-		pthread_mutex_destroy(&data->philo[i].fork_l);
-		pthread_mutex_destroy(data->philo[i].fork_r);
+		pthread_mutex_destroy(&info->philo[i].fork_l);
+		pthread_mutex_destroy(info->philo[i].fork_r);
 	}
-	free(data->philo);
-	pthread_mutex_destroy(&data->print);
-	pthread_mutex_destroy(&data->m_stop);
-	pthread_mutex_destroy(&data->m_eat);
-	pthread_mutex_destroy(&data->dead);
+	free(info->philo);
+	pthread_mutex_destroy(&info->print);
+	pthread_mutex_destroy(&info->m_stop);
+	pthread_mutex_destroy(&info->m_eat);
+	pthread_mutex_destroy(&info->dead);
 }

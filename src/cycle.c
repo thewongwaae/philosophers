@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:25 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/11 01:55:55 by hwong            ###   ########.fr       */
+/*   Updated: 2023/01/11 21:40:51 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,31 +90,38 @@ void	*life(void *p)
 	return (NULL);
 }
 
-int	init(t_data *data)
+/*
+*	Store start time in a var for reference on philo tasks
+*	
+*
+*
+*
+*/
+int	init(t_data *info)
 {
 	int	i;
 
-	data->start_time = timestamp();
+	info->start_time = timestamp();
 	i = -1;
-	while (++i < data->philo_count)
+	while (++i < info->philo_count)
 	{
-		data->philo[i].id = i + 1;
-		data->philo[i].last_meal = 0;
-		data->philo[i].fork_r = NULL;
-		data->philo[i].info = data;
-		data->philo[i].meal_count = 0;
-		pthread_mutex_init(&(data->philo[i].fork_l), NULL);
-		if (i == data->philo_count - 1)
-			data->philo[i].fork_r = &data->philo[0].fork_l;
+		info->philo[i].id = i + 1;
+		info->philo[i].last_meal = 0;
+		info->philo[i].fork_r = NULL;
+		info->philo[i].info = info;
+		info->philo[i].meal_count = 0;
+		pthread_mutex_init(&(info->philo[i].fork_l), NULL);
+		if (i == info->philo_count - 1)
+			info->philo[i].fork_r = &info->philo[0].fork_l;
 		else
-			data->philo[i].fork_r = &data->philo[i + 1].fork_l;
-		if (pthread_create(&data->philo[i].thread, NULL, \
-				&life, &(data->philo[i])) != 0)
-			return (-1);
+			info->philo[i].fork_r = &info->philo[i + 1].fork_l;
+		if (pthread_create(&info->philo[i].thread, NULL, \
+				&life, &(info->philo[i])) != 0)
+			return (1);
 	}
 	i = -1;
-	while (++i < data->philo_count)
-		if (!pthread_join(data->philo[i].thread, NULL))
+	while (++i < info->philo_count)
+		if (!pthread_join(info->philo[i].thread, NULL))
 			return (1);
 	return (0);
 }

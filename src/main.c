@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:53:15 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/11 01:54:44 by hwong            ###   ########.fr       */
+/*   Updated: 2023/01/11 21:41:34 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,54 +33,54 @@ int	is_num(char **av)
 *
 *	Parse inputs into their respective struct vars and error check
 */
-int	parse(t_data *data, char **av)
+int	parse(t_data *info, char **av)
 {
-	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->m_stop, NULL);
-	pthread_mutex_init(&data->m_eat, NULL);
-	pthread_mutex_init(&data->dead, NULL);
-	data->stop = 0;
-	data->philo = malloc(sizeof(t_philo) * data->philo_count);
-	if (!data->philo)
+	pthread_mutex_init(&info->print, NULL);
+	pthread_mutex_init(&info->m_stop, NULL);
+	pthread_mutex_init(&info->m_eat, NULL);
+	pthread_mutex_init(&info->dead, NULL);
+	info->stop = 0;
+	info->philo = malloc(sizeof(t_philo) * info->philo_count);
+	if (!info->philo)
 		return (1);
 	if (!is_num(&av[1]))
 	{
 		printf(RED "Non-numeric arguement(s) provided.\n" RESET);
 		return (1);
 	}
-	data->philo_eat = 0;
-	data->philo_count = ft_atoi(av[1]);
-	data->death = ft_atoi(av[2]);
-	data->eat = ft_atoi(av[3]);
-	data->sleep = ft_atoi(av[4]);
+	info->philo_eat = 0;
+	info->philo_count = ft_atoi(av[1]);
+	info->death = ft_atoi(av[2]);
+	info->eat = ft_atoi(av[3]);
+	info->sleep = ft_atoi(av[4]);
 	if (av[5])
 	{
-		data->eat_count = ft_atoi(av[5]);
-		if (!data->eat_count)
+		info->eat_count = ft_atoi(av[5]);
+		if (!info->eat_count)
 			return (1);
 	}
 	return (0);
 }
 
 /*
-*	Create a 'data' var inheriting the t_data struct. This
+*	Create a 'info' var inheriting the t_data struct. This
 *	contains overall information for the entire program.
 *	
-*	Initialise the data struct
+*	Parse input values into the info struct
 *
 *	
 */
 int	main(int ac, char **av)
 {
-	t_data	data;
+	t_data	info;
 
 	if (ac != 5 && ac != 6)
 		return (printf(YELLOW "Incorrect number of arguments provided.\n./philosophers numOfPhilo death eat sleep [stopEatCount]\n" RESET));
-	if (parse(&data, av))
+	if (parse(&info, av))
 	{
-		free(data.philo);
+		free(info.philo);
 		return (0);
 	}
-	init(&data);
-	freeall(&data);
+	init(&info);
+	freeall(&info);
 }
