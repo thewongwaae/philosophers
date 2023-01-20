@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/26 14:53:25 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/01/11 21:40:51 by hwong            ###   ########.fr       */
+/*   Created: 2023/01/21 00:41:42 by hwong             #+#    #+#             */
+/*   Updated: 2023/01/21 00:41:43 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void	philo_eat(t_philo *philo)
 	output_philo(philo, " is thinking\n", YELLOW);
 }
 
+/*
+*	The main logic loop for a philosopher life cycle
+*	
+*
+*/
 void	*life(void *p)
 {
 	t_philo		*philo;
