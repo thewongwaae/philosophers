@@ -6,12 +6,16 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:42 by hwong             #+#    #+#             */
-/*   Updated: 2023/01/21 00:41:43 by hwong            ###   ########.fr       */
+/*   Updated: 2023/02/19 16:05:19 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/*
+*	Check if a philosopher has exceeded the death timer
+*	if yes, set philo to dead
+*/
 void	*check_death(void *p)
 {
 	t_philo	*philo;
@@ -33,6 +37,9 @@ void	*check_death(void *p)
 	return (NULL);
 }
 
+/*
+*	Lock left and right fork
+*/
 void	take_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->fork_l));
@@ -42,10 +49,16 @@ void	take_fork(t_philo *philo)
 		ft_usleep(philo->info->death * 2);
 		return ;
 	}
-	pthread_mutex_lock((philo->fork_r));
+	pthread_mutex_lock(philo->fork_r);
 	output_philo(philo, " has taken a fork\n", GREEN);
 }
 
+/*
+*	Lock eat mutex
+*	Update last meal time
+*	Increment meal count
+*	usleep for meal time then release mutexes for both fork
+*/
 void	philo_eat(t_philo *philo)
 {
 	output_philo(philo, " is eating\n", CYAN);
@@ -63,8 +76,11 @@ void	philo_eat(t_philo *philo)
 
 /*
 *	The main logic loop for a philosopher life cycle
-*	
-*
+*	Wait for a short amount of time to prevent deadlock
+*	- deadlock -> processes trying to use same resource (hang or crash)
+*	Create thread to check for death and join to main thread
+*	Locks forks, eats, unlocks forks
+*	If a philo has reached required meal count, check other philo
 */
 void	*life(void *p)
 {
@@ -72,7 +88,7 @@ void	*life(void *p)
 	pthread_t	t;
 
 	philo = (t_philo *)p;
-	if (philo->id % 2 == 0)
+	if ((philo->id & 1) == 0)
 		ft_usleep(philo->info->eat / 10);
 	while (!is_dead(philo, 0))
 	{
@@ -96,11 +112,8 @@ void	*life(void *p)
 }
 
 /*
-*	Store start time in a var for reference on philo tasks
-*	
-*
-*
-*
+*	Init each philo in the info struct
+*	Create thread for each philo and join to main thread
 */
 int	init(t_data *info)
 {

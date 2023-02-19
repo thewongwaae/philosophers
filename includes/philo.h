@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:36 by hwong             #+#    #+#             */
-/*   Updated: 2023/01/21 00:41:37 by hwong            ###   ########.fr       */
+/*   Updated: 2023/02/19 16:08:52 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef struct s_philo
 	int				meal_count;
 	bool			is_eating;
 	long int		last_meal;
-	struct s_data	*info;
+	pthread_t		thread;
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
-	pthread_t		thread;
+	struct s_data	*info;
 }					t_philo;
 
 typedef struct s_data
@@ -68,8 +68,5 @@ void		ft_usleep(int ms);
 void		freeall(t_data *info);
 int			is_dead(t_philo *philo, int nb);
 void		output_philo(t_philo *philo, char *str, char *colour);
-
-int			ft_isdigit(int ch);
-int			ft_atoi(const char *s);
 
 #endif

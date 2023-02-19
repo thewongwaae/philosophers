@@ -6,13 +6,37 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:52 by hwong             #+#    #+#             */
-/*   Updated: 2023/01/21 00:41:53 by hwong            ###   ########.fr       */
+/*   Updated: 2023/02/19 16:07:44 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	is_num(char **av)
+static int	ft_isdigit(int ch)
+{
+	if (ch >= '0' && ch <= '9')
+		return (1);
+	return (0);
+}
+
+static int	ft_atoi(const char *s)
+{
+	int	num;
+	int	sign;
+
+	num = 0;
+	sign = 1;
+	while (*s == 32 || (*s >= 9 && *s <= 13))
+		s++;
+	if (*s == '-' || *s == '+')
+		if (*s++ == '-')
+			sign = -sign;
+	while (*s >= '0' && *s <= '9')
+		num = num * 10 + (*s++ - 48);
+	return (num * sign);
+}
+
+static int	is_num(char **av)
 {
 	int	i;
 	int	j;
@@ -28,11 +52,6 @@ int	is_num(char **av)
 	return (1);
 }
 
-/*
-*	Initialise mutexes for different tasks/components of the philosophers
-*
-*	Parse inputs into their respective struct vars and error check
-*/
 int	parse(t_data *info, char **av)
 {
 	pthread_mutex_init(&info->print, NULL);
@@ -62,14 +81,6 @@ int	parse(t_data *info, char **av)
 	return (0);
 }
 
-/*
-*	Create a 'info' var inheriting the t_data struct. This
-*	contains overall information for the entire program.
-*	
-*	Parse input values into the info struct
-*
-*	
-*/
 int	main(int ac, char **av)
 {
 	t_data	info;

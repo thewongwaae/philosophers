@@ -1,11 +1,11 @@
-NAME		= philosophers
+NAME		= philo
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror -pthread
 RM 			= rm -rf
 
 INCLUDES	= includes
 
-FILES		= main cycle utils libft
+FILES		= main cycle utils
 SRCS 		= $(addsuffix .c, $(addprefix src/, $(FILES)))
 
 $(NAME):
