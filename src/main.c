@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:52 by hwong             #+#    #+#             */
-/*   Updated: 2023/02/19 16:07:44 by hwong            ###   ########.fr       */
+/*   Updated: 2023/02/22 16:32:42 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,16 @@ static int	is_num(char **av)
 
 int	parse(t_data *info, char **av)
 {
-	pthread_mutex_init(&info->print, NULL);
-	pthread_mutex_init(&info->m_stop, NULL);
-	pthread_mutex_init(&info->m_eat, NULL);
-	pthread_mutex_init(&info->dead, NULL);
-	info->stop = 0;
-	info->philo = malloc(sizeof(t_philo) * info->philo_count);
-	if (!info->philo)
-		return (1);
 	if (!is_num(&av[1]))
 	{
 		printf(RED "Non-numeric arguement(s) provided.\n" RESET);
 		return (1);
 	}
+	pthread_mutex_init(&info->print, NULL);
+	pthread_mutex_init(&info->m_stop, NULL);
+	pthread_mutex_init(&info->m_eat, NULL);
+	pthread_mutex_init(&info->dead, NULL);
+	info->stop = 0;
 	info->philo_eat = 0;
 	info->philo_count = ft_atoi(av[1]);
 	info->death = ft_atoi(av[2]);
@@ -78,6 +75,9 @@ int	parse(t_data *info, char **av)
 		if (!info->eat_count)
 			return (1);
 	}
+	info->philo = malloc(sizeof(t_philo) * info->philo_count);
+	if (!info->philo)
+		return (1);
 	return (0);
 }
 
@@ -86,7 +86,8 @@ int	main(int ac, char **av)
 	t_data	info;
 
 	if (ac != 5 && ac != 6)
-		return (printf(YELLOW "Incorrect number of arguments provided.\n./philosophers numOfPhilo death eat sleep [stopEatCount]\n" RESET));
+		return (printf(YELLOW "Incorrect number of arguments provided.\n./philosophers \
+			numOfPhilo death eat sleep [stopEatCount]\n" RESET));
 	if (parse(&info, av))
 	{
 		free(info.philo);
@@ -94,4 +95,5 @@ int	main(int ac, char **av)
 	}
 	init(&info);
 	freeall(&info);
+	return (0);
 }

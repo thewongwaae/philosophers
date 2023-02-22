@@ -1,16 +1,14 @@
 NAME		= philo
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -pthread
+CFLAGS		= -Wall -Wextra -Werror -pthread -fsanitize=address -I includes/
 RM 			= rm -rf
-
-INCLUDES	= includes
 
 FILES		= main cycle utils
 SRCS 		= $(addsuffix .c, $(addprefix src/, $(FILES)))
 
 $(NAME):
 	@echo "\033[0;32mSetting the table...\033[0m"
-	@gcc $(CFLAGS) $(SRCS) -I $(INCLUDES) -o $(NAME)
+	@gcc $(CFLAGS) $(SRCS) -o $(NAME)
 
 all: $(NAME)
 
