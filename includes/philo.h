@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:36 by hwong             #+#    #+#             */
-/*   Updated: 2023/02/19 16:08:52 by hwong            ###   ########.fr       */
+/*   Updated: 2023/02/24 12:18:56 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,6 @@
 # define GREEN "\033[32m" //take fork
 # define PURPLE "\033[38;5;129m" //sleeping
 
-typedef struct s_philo
-{
-	int				id;
-	int				meal_count;
-	bool			is_eating;
-	long int		last_meal;
-	pthread_t		thread;
-	pthread_mutex_t	*fork_r;
-	pthread_mutex_t	fork_l;
-	struct s_data	*info;
-}					t_philo;
-
 typedef struct s_data
 {
 	int				philo_eat;
@@ -50,12 +38,25 @@ typedef struct s_data
 	int				eat_count;
 	int				stop;
 	long int		start_time;
-	t_philo			*philo;
+	struct s_philo	*philo;
 	pthread_mutex_t	print;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	dead;
 }					t_data;
+
+typedef struct s_philo
+{
+	int				id;
+	int				meal_count;
+	bool			is_eating;
+	long int		last_meal;
+	pthread_t		thread;
+	pthread_mutex_t	*fork_r;
+	pthread_mutex_t	fork_l;
+	t_data			*info;
+}					t_philo;
+
 
 int			init(t_data *info);
 void		*life(void *p);

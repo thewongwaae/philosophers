@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:52 by hwong             #+#    #+#             */
-/*   Updated: 2023/02/22 16:32:42 by hwong            ###   ########.fr       */
+/*   Updated: 2023/02/24 12:19:37 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		return (printf(YELLOW "Incorrect number of arguments provided.\n./philosophers \
 			numOfPhilo death eat sleep [stopEatCount]\n" RESET));
+	info.eat_count = 0;
 	if (parse(&info, av))
 	{
 		free(info.philo);
