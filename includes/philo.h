@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:36 by hwong             #+#    #+#             */
-/*   Updated: 2023/02/24 12:18:56 by hwong            ###   ########.fr       */
+/*   Updated: 2023/03/05 14:12:31 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		philo_eat(t_philo *philo);
 void		take_fork(t_philo *philo);
 void		*check_death(void *p);
 
-long long	timestamp(void);
+long long	get_time(void);
 void		ft_usleep(int ms);
 void		freeall(t_data *info);
 int			is_dead(t_philo *philo, int nb);

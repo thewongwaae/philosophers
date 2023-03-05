@@ -6,15 +6,17 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:42 by hwong             #+#    #+#             */
-/*   Updated: 2023/02/19 16:05:19 by hwong            ###   ########.fr       */
+/*   Updated: 2023/03/05 14:12:31 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /*
-*	Check if a philosopher has exceeded the death timer
-*	if yes, set philo to dead
+*	is run for each philo to continuously monitor
+*	time since last meal
+*	if a philo has exceeded death timer but not
+*	dead, set to dead, print msg then exit
 */
 void	*check_death(void *p)
 {
@@ -24,7 +26,7 @@ void	*check_death(void *p)
 	ft_usleep(philo->info->death + 1);
 	pthread_mutex_lock(&philo->info->m_eat);
 	pthread_mutex_lock(&philo->info->m_stop);
-	if (!is_dead(philo, 0) && timestamp() - \
+	if (!is_dead(philo, 0) && get_time() - \
 			philo->last_meal >= (long)(philo->info->death))
 	{
 		pthread_mutex_unlock(&philo->info->m_eat);
@@ -38,7 +40,8 @@ void	*check_death(void *p)
 }
 
 /*
-*	Lock left and right fork
+*	pick up left and right fork
+*	handle for if only 1 philo, he should die
 */
 void	take_fork(t_philo *philo)
 {
@@ -57,13 +60,17 @@ void	take_fork(t_philo *philo)
 *	Lock eat mutex
 *	Update last meal time
 *	Increment meal count
-*	usleep for meal time then release mutexes for both fork
+*	unlock mutex
+*	usleep for meal time
+*	release mutexes for both fork
+*	usleep for sleep time
+*	think until for is available again
 */
 void	philo_eat(t_philo *philo)
 {
 	output_philo(philo, " is eating\n", CYAN);
 	pthread_mutex_lock(&(philo->info->m_eat));
-	philo->last_meal = timestamp();
+	philo->last_meal = get_time();
 	philo->meal_count++;
 	pthread_mutex_unlock(&(philo->info->m_eat));
 	ft_usleep(philo->info->eat);
@@ -88,14 +95,14 @@ void	*life(void *p)
 	pthread_t	t;
 
 	philo = (t_philo *)p;
-	if ((philo->id & 1) == 0)
+	if ((philo->id % 2) == 0)
 		ft_usleep(philo->info->eat / 10);
 	while (!is_dead(philo, 0))
 	{
 		pthread_create(&t, NULL, check_death, p);
+		pthread_detach(t);
 		take_fork(philo);
 		philo_eat(philo);
-		pthread_detach(t);
 		if (philo->meal_count == philo->info->eat_count)
 		{
 			pthread_mutex_lock(&philo->info->m_stop);
@@ -119,7 +126,7 @@ int	init(t_data *info)
 {
 	int	i;
 
-	info->start_time = timestamp();
+	info->start_time = get_time();
 	i = -1;
 	while (++i < info->philo_count)
 	{
@@ -134,12 +141,12 @@ int	init(t_data *info)
 		else
 			info->philo[i].fork_r = &info->philo[i + 1].fork_l;
 		if (pthread_create(&info->philo[i].thread, NULL, \
-				&life, &(info->philo[i])) != 0)
+			&life, &(info->philo[i])) != 0)
 			return (1);
 	}
 	i = -1;
 	while (++i < info->philo_count)
-		if (!pthread_join(info->philo[i].thread, NULL))
+		if (pthread_join(info->philo[i].thread, NULL) != 0)
 			return (1);
 	return (0);
 }

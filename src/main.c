@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:52 by hwong             #+#    #+#             */
-/*   Updated: 2023/02/24 12:19:37 by hwong            ###   ########.fr       */
+/*   Updated: 2023/03/05 14:18:54 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,6 @@ static int	is_num(char **av)
 
 int	parse(t_data *info, char **av)
 {
-	if (!is_num(&av[1]))
-	{
-		printf(RED "Non-numeric arguement(s) provided.\n" RESET);
-		return (1);
-	}
 	pthread_mutex_init(&info->print, NULL);
 	pthread_mutex_init(&info->m_stop, NULL);
 	pthread_mutex_init(&info->m_eat, NULL);
@@ -69,15 +64,15 @@ int	parse(t_data *info, char **av)
 	info->death = ft_atoi(av[2]);
 	info->eat = ft_atoi(av[3]);
 	info->sleep = ft_atoi(av[4]);
-	if (av[5])
-	{
-		info->eat_count = ft_atoi(av[5]);
-		if (!info->eat_count)
-			return (1);
-	}
 	info->philo = malloc(sizeof(t_philo) * info->philo_count);
 	if (!info->philo)
 		return (1);
+	if (av[5])
+	{
+		info->eat_count = ft_atoi(av[5]);
+		if (info->eat_count == 0)
+			return (1);
+	}
 	return (0);
 }
 
@@ -88,7 +83,20 @@ int	main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		return (printf(YELLOW "Incorrect number of arguments provided.\n./philosophers \
 			numOfPhilo death eat sleep [stopEatCount]\n" RESET));
+	if (!is_num(&av[1]) || !is_num(&av[2]) || !is_num(&av[3]) || !is_num(&av[4]))
+	{
+		printf(RED "Non-numeric arguement(s) provided.\n" RESET);
+		return (1);
+	}
 	info.eat_count = 0;
+	if (ac == 6)
+	{
+		if (!is_num(&av[5]))
+		{
+			printf(RED "Non-numeric arguement(s) provided.\n" RESET);
+			return (1);
+		}
+	}
 	if (parse(&info, av))
 	{
 		free(info.philo);
