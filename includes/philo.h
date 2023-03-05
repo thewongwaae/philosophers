@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:36 by hwong             #+#    #+#             */
-/*   Updated: 2023/03/05 14:12:31 by hwong            ###   ########.fr       */
+/*   Updated: 2023/03/05 14:36:46 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_philo
 	pthread_mutex_t	fork_l;
 	t_data			*info;
 }					t_philo;
-
 
 int			init(t_data *info);
 void		*life(void *p);

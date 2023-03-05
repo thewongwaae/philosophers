@@ -6,7 +6,7 @@
 /*   By: hwong <hwong@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 00:41:52 by hwong             #+#    #+#             */
-/*   Updated: 2023/03/05 14:18:54 by hwong            ###   ########.fr       */
+/*   Updated: 2023/03/05 14:41:36 by hwong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,17 @@ static int	is_num(char **av)
 		j = -1;
 		while (av[i][++j])
 			if (!ft_isdigit(av[i][j]))
-				return (0);
+				return (1);
 	}
-	return (1);
+	return (0);
 }
 
+/*
+*	init all mutexes
+*	map the av values into the struct
+*	malloc philos
+*	handle for av[5]
+*/
 int	parse(t_data *info, char **av)
 {
 	pthread_mutex_init(&info->print, NULL);
@@ -83,20 +89,12 @@ int	main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		return (printf(YELLOW "Incorrect number of arguments provided.\n./philosophers \
 			numOfPhilo death eat sleep [stopEatCount]\n" RESET));
-	if (!is_num(&av[1]) || !is_num(&av[2]) || !is_num(&av[3]) || !is_num(&av[4]))
-	{
-		printf(RED "Non-numeric arguement(s) provided.\n" RESET);
-		return (1);
-	}
+	if (is_num(&av[1]) || is_num(&av[2]) || is_num(&av[3]) || is_num(&av[4]))
+		return (printf(RED "Non-numeric arguement(s) provided.\n" RESET));
 	info.eat_count = 0;
 	if (ac == 6)
-	{
-		if (!is_num(&av[5]))
-		{
-			printf(RED "Non-numeric arguement(s) provided.\n" RESET);
-			return (1);
-		}
-	}
+		if (is_num(&av[5]))
+			return (printf(RED "Non-numeric arguement(s) provided.\n" RESET));
 	if (parse(&info, av))
 	{
 		free(info.philo);
